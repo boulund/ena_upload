@@ -15,7 +15,7 @@ Modify the script to add/remove manifest properties if needed.
 
 ## Step 3 - Upload the data using Webin-CLI
 Download the latest version of Webin-CLI from
-[https://github.com/enasequence/webin-cli/releases/latest](Webin-CLI Github).
+[Webin-CLI Github](https://github.com/enasequence/webin-cli/releases/latest).
 
 The `upload_data.sh` script runs `webin-cli-*.jar` (expected to be in the
 same folder) to upload the reads to ENA using the Webin user account and
