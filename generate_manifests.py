@@ -43,11 +43,11 @@ def parse_args():
     return parser.parse_args()
 
 
-def generate_manifests(ena_sample_csv, instrument, study, library_selection,
+def generate_manifests(sample_csv, instrument, study, library_selection,
         library_source, library_strategy):
 
     samples = dict()
-    with open(ena_sample_csv) as csvfile:
+    with open(sample_csv) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             samples[row["alias"]] = row["id"]
@@ -83,7 +83,7 @@ def generate_manifests(ena_sample_csv, instrument, study, library_selection,
 args = parse_args()
 
 generate_manifests(
-    args.ena_sample_csv,
+    args.sample_csv,
     args.instrument,
     args.study,
     args.library_selection,
