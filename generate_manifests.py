@@ -53,6 +53,7 @@ def generate_manifests(sample_csv, instrument, study, library_selection,
             samples[row["alias"]] = row["id"]
 
     for file_ in pathlib.Path(".").glob("*1.fq.gz"):
+        print(f"Parsing sample_name from: {file_}...")
         if instrument in ("DNBSEQ-G400", "DNBSEQ-T7"):
             _, sample_name, _, _ = file_.name.split("__")
         else:
@@ -67,7 +68,7 @@ def generate_manifests(sample_csv, instrument, study, library_selection,
         STUDY {study}
         SAMPLE {sample_id}
         NAME {sample_name}
-        INSTRUMENT Illumina HiSeq 2500
+        INSTRUMENT {instrument}
         LIBRARY_SELECTION {library_selection}
         LIBRARY_SOURCE {library_source}
         LIBRARY_STRATEGY {library_strategy}
