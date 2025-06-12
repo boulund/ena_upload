@@ -10,5 +10,6 @@ for manifest in *manifest.txt; do
 	  -userName $WEBINUSER \
 	  -password $WEBINPASSWORD \
 	  -manifest ${manifest} \
-	  -submit
-done
+	  -submit \
+	  | tee ${manifest}.report 
+done 
