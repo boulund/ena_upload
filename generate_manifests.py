@@ -53,14 +53,18 @@ def generate_manifests(sample_csv, instrument, study, library_selection,
             samples[row["alias"]] = row["id"]
 
     for file_ in pathlib.Path(".").glob("*1.fq.gz"):
-        print(f"Parsing sample_name from: {file_}...")
+        #print(f"INFO: Parsing sample_name from: {file_}...")
         if instrument in ("DNBSEQ-G400", "DNBSEQ-T7"):
             _, sample_name, _, _ = file_.name.split("__")
         else:
             # Assuming simple filenames like Sample123_1.fq.gz
             sample_name = file_.name.split(".")[0][:-2]
 
-        sample_id = samples[sample_name]
+        try:
+            sample_id = samples[sample_name.replace("_", ":")]
+        except KeyError as missing_key:
+            print(f"ERROR: sample name {missing_key} not present in samplesheet CSV!")
+            continue
         fastq_1 = file_.name
         fastq_2 = file_.name.replace("1.fq.gz", "2.fq.gz")
 
