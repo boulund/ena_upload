@@ -10,6 +10,6 @@ for manifest in *manifest.txt; do
 	  -userName $WEBINUSER \
 	  -password $WEBINPASSWORD \
 	  -manifest ${manifest} \
-	  -submit \
-	  | tee ${manifest}.report 
+	  -submit
+  cp ./webin-cli.report "${manifest}.report"
 done 
