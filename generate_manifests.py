@@ -47,10 +47,12 @@ def generate_manifests(sample_csv, instrument, study, library_selection,
         library_source, library_strategy):
 
     samples = dict()
+    remaining_samples = set()
     with open(sample_csv) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             samples[row["alias"]] = row["id"]
+            remaining_samples.add(row["alias"])
 
     for file_ in pathlib.Path(".").glob("*1.fq.gz"):
         #print(f"INFO: Parsing sample_name from: {file_}...")
@@ -63,7 +65,7 @@ def generate_manifests(sample_csv, instrument, study, library_selection,
         try:
             sample_id = samples[sample_name.replace("_", ":")]
         except KeyError as missing_key:
-            print(f"ERROR: sample name {missing_key} not present in samplesheet CSV!")
+            print(f"ERROR: FASTQs not present in samplesheet CSV: {missing_key}")
             continue
         fastq_1 = file_.name
         fastq_2 = file_.name.replace("1.fq.gz", "2.fq.gz")
@@ -80,9 +82,13 @@ def generate_manifests(sample_csv, instrument, study, library_selection,
         FASTQ {fastq_2}
         """)
 
-        manifest_filename = file_.name.rstrip("1.fq.gz") + "manifest.txt"
+        manifest_filename = file_.name.rstrip("1.fq.gz") + ".manifest.txt"
         with open(manifest_filename, "w") as manifest_file:
             manifest_file.write(manifest)
+            remaining_samples.remove(sample_name)
+
+    for unmatched_sample in remaining_samples:
+        print(f"ERROR: Sample alias from samplesheet not matched to any FASTQs: '{unmatched_sample}'")
 
 
 args = parse_args()
