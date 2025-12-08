@@ -63,7 +63,7 @@ def generate_manifests(sample_csv, instrument, study, library_selection,
             sample_name = file_.name.split(".")[0][:-2]
 
         try:
-            sample_id = samples[sample_name.replace("_", ":")]
+            sample_id = samples[sample_name]
         except KeyError as missing_key:
             print(f"ERROR: FASTQs not present in samplesheet CSV: {missing_key}")
             continue
