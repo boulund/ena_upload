@@ -5,11 +5,15 @@
 set -eou pipefail
 
 for manifest in *manifest.txt; do
-  java -jar webin-cli-*.jar \
-	  -context=reads \
-	  -userName $WEBINUSER \
-	  -password $WEBINPASSWORD \
-	  -manifest ${manifest} \
-	  -submit
-  cp ./webin-cli.report "${manifest}.report"
+  if [ ! -e ${manifest}.report ];then 
+	  java -jar webin-cli-*.jar \
+	  	-context=reads \
+	  	-userName $WEBINUSER \
+	  	-password $WEBINPASSWORD \
+	  	-manifest ${manifest} \
+	  	-submit
+	  cp ./webin-cli.report "${manifest}.report"
+  else
+	  echo "INFO: ${manifest}.report already exists, skipping!"
+  fi
 done 
