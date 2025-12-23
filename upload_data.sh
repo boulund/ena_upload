@@ -5,15 +5,15 @@
 set -eou pipefail
 
 for manifest in *manifest.txt; do
-  if [ ! -e ${manifest}.report ];then 
+  sample_name=$(awk '/NAME/{print $2}' ${manifest})
+  if [ ! -d "reads/${sample_name}" ];then 
 	  java -jar webin-cli-*.jar \
 	  	-context=reads \
 	  	-userName $WEBINUSER \
 	  	-password $WEBINPASSWORD \
 	  	-manifest ${manifest} \
 	  	-submit
-	  cp ./webin-cli.report "${manifest}.report"
   else
-	  echo "INFO: ${manifest}.report already exists, skipping!"
+	  echo "INFO: directory reads/${sample_name} already exists, skipping!"
   fi
 done 
